@@ -32,7 +32,7 @@ PROCESSS_DIS=`ps -A -o pid,cmd | egrep "java -jar" | egrep "callcenter.jar disca
 PROCESSS_CONF=`ps -A -o pid,cmd | egrep "java -jar" | egrep "callcenter.jar conf" | egrep -v egrep | awk '{print $1}'`
 
 echo "==============================================" >> $log
-echo "Rodando..." >> $log
+echo "Recovery Telecom - V2.0.1" >> $log
 echo "==============================================" >> $log
 
 #CHECANDO PID DO SERVIDOR WEB DE ACORDO COM O SISTEMA OPERACIONAL
