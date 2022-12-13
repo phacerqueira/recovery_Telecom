@@ -93,6 +93,9 @@ if [ $PROCESSS_CALL = 0 ]
         /etc/init.d/callcenter restart
         echo "$dt - Callcenter REINICIADO." >> $log
         echo "==============================================" >> $log
+        /etc/init.d/callcenter_conf restart
+        echo "$dt - Callcenter_Conf REINICIADO." >> $log
+        echo "==============================================" >> $log       
     elif [ $PROCESSS_CALL -gt 1 ]
     then
         echo "$dt - Numero de PIDs do CallCenter == $PROCESSS_CALL" >> $log
@@ -100,6 +103,10 @@ if [ $PROCESSS_CALL = 0 ]
         /etc/init.d/callcenter stop
         /etc/init.d/callcenter start
         echo "$dt - Callcenter REINICIADO." >> $log
+        echo "==============================================" >> $log
+        /etc/init.d/callcenter_conf stop
+        /etc/init.d/callcenter_conf start
+        echo "$dt - Callcenter_Conf REINICIADO." >> $log
         echo "==============================================" >> $log        
     else 
         echo "$dt - Callcenter OK - Nada a fazer" >> $log
@@ -115,6 +122,9 @@ if [ $PROCESSS_DIS = 0 ]
         /etc/init.d/callcenter restart
         echo "$dt - Callcenter REINICIADO." >> $log
         echo "==============================================" >> $log
+        /etc/init.d/callcenter_conf restart
+        echo "$dt - Callcenter_Conf REINICIADO." >> $log
+        echo "==============================================" >> $log
     elif [ $PROCESSS_CALL -gt 1 ]
     then
         echo "$dt - Numero de PIDs do Discador == $PROCESSS_CALL" >> $log
@@ -122,6 +132,10 @@ if [ $PROCESSS_DIS = 0 ]
         /etc/init.d/callcenter stop
         /etc/init.d/callcenter start
         echo "$dt - Callcenter REINICIADO." >> $log
+        echo "==============================================" >> $log
+        /etc/init.d/callcenter_conf stop
+        /etc/init.d/callcenter_conf start
+        echo "$dt - Callcenter_Conf REINICIADO." >> $log
         echo "==============================================" >> $log        
     else 
         echo "$dt - Discador OK - Nada a fazer" >> $log
@@ -133,6 +147,9 @@ fi
 if [ -z PROCESSS_CONF ];
     then
         echo "$dt - Callcenter_Conf PARADO" >> $log
+        /etc/init.d/callcenter restart
+        echo "$dt - Callcenter REINICIADO." >> $log
+        echo "==============================================" >> $log
         /etc/init.d/callcenter_conf restart
         echo "$dt - Callcenter_Conf REINICIADO." >> $log
         echo "==============================================" >> $log
