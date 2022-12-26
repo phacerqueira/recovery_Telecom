@@ -17,7 +17,8 @@ PROCESSS_AST=`pidof asterisk | wc -l`
 
 MAX_RAM=`free -m | grep "Mem" | awk '{print $2}'`
 USO_RAM=`free -m | grep "Mem" | awk '{print $3}'`
-PERCENT_RAM="$[($USO_RAM * 100) / $MAX_RAM]"
+PERCENT_RAM=$((100*$USO_RAM/$MAX_RAM))
+
 
 # CHECANDO PID DO CALLCENTER
 
@@ -32,23 +33,23 @@ PROCESSS_DIS=`ps -A -o pid,cmd | egrep "java -jar" | egrep "callcenter.jar disca
 PROCESSS_CONF=`ps -A -o pid,cmd | egrep "java -jar" | egrep "callcenter.jar conf" | egrep -v egrep | awk '{print $1}'`
 
 echo "==============================================" >> $log
-echo "Recovery Telecom - V2.0.1" >> $log
+echo "Recovery Telecom - V2.0.2" >> $log
 echo "==============================================" >> $log
 
 #CHECANDO PID DO SERVIDOR WEB DE ACORDO COM O SISTEMA OPERACIONAL
 
-if [ $SERVER_OS = "Debian" ]
+if [ -z $SERVER_OS ]
     then
-        PROCESSS_HTTPD=`ps -A -o "%p : %a" | grep "/usr/sbin/apache2" | grep -v grep | awk '{print $1}' | wc -l`
-    else
         PROCESSS_HTTPD=`ps -A -o "%p : %a"| grep "/usr/sbin/httpd" | grep -v grep | wc -l`
+    else
+        PROCESSS_HTTPD=`ps -A -o "%p : %a" | grep "/usr/sbin/apache2" | grep -v grep | awk '{print $1}' | wc -l`
 fi
 
 ##############################################################################################################
 
 ##CHECANDO ASTERISK PELA CONTAGEM DE PIDS
 
-if [ $PROCESSS_AST = 0 ]
+if [ $PROCESSS_AST == 0 ]
     then
         echo "$dt - Numero de PIDs do Asterisk == $PROCESSS_AST" >> $log
         echo "$dt - Asterisk PARADO..." >> $log
@@ -163,15 +164,15 @@ fi
 if [ $PROCESSS_HTTPD = 0 ];
         then
             echo "$dt - APACHE PARADO" >> $log
-            if [ $SERVER_OS = "Debian" ]
+            if [ -z $SERVER_OS ]
                 then
-                    /etc/init.d/apache2 restart
-                    echo "$dt - APACHE REINICIADO." >> $log
-                    echo "==============================================" >> $log
-                else
                     /etc/init.d/httpd restart
                     echo "$dt - HTTPD REINICIADO." >> $log
                     echo "==============================================" >> $log
+                else
+                    /etc/init.d/apache2 restart
+                    echo "$dt - APACHE REINICIADO." >> $log
+                    echo "==============================================" >> $log 
                 fi
         else
             echo "$dt - Apache ok - Nenhuma ação realizada" >> $log
