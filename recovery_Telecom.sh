@@ -11,7 +11,7 @@ SERVER_OS=`cat /etc/issue | grep Debian | awk '{print $1}'`
 
 # CHECANDO E CONTANDO PIDS DO ASTERISK
 
-PROCESSS_AST=`pgrep -x asterisk | wc -l` 
+PROCESSS_AST=`ps -A -o pid,cmd | grep /usr/sbin/asterisk | grep -v grep | awk '{print $1}' | wc -l` 
 
 # MONITORAMENTO DE MEMORIA RAM
 
