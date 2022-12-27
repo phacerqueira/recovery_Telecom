@@ -33,16 +33,20 @@ PROCESSS_DIS=`ps -A -o pid,cmd | egrep "java -jar" | egrep "callcenter.jar disca
 PROCESSS_CONF=`ps -A -o pid,cmd | egrep "java -jar" | egrep "callcenter.jar conf" | egrep -v egrep | awk '{print $1}'`
 
 echo "==============================================" >> $log
-echo "Recovery Telecom - V2.0.2" >> $log
+echo "Recovery Telecom - V3" >> $log
 echo "==============================================" >> $log
 
 #CHECANDO PID DO SERVIDOR WEB DE ACORDO COM O SISTEMA OPERACIONAL
 
 if [ -z $SERVER_OS ]
     then
+        echo "$dt - Sistema: CentOS - Ajustado para httpd" >> $log
         PROCESSS_HTTPD=`ps -A -o "%p : %a"| grep "/usr/sbin/httpd" | grep -v grep | wc -l`
+        echo "==============================================" >> $log
     else
+        echo "$dt - Sistema: Debian - Ajustado para Apache" >> $log
         PROCESSS_HTTPD=`ps -A -o "%p : %a" | grep "/usr/sbin/apache2" | grep -v grep | awk '{print $1}' | wc -l`
+        echo "==============================================" >> $log
 fi
 
 ##############################################################################################################
@@ -101,12 +105,10 @@ if [ $PROCESSS_CALL = 0 ]
     then
         echo "$dt - Numero de PIDs do CallCenter == $PROCESSS_CALL" >> $log
         echo "$dt - Callcenter DUPLICADO" >> $log
-        /etc/init.d/callcenter stop
-        /etc/init.d/callcenter start
+        /etc/init.d/callcenter restart
         echo "$dt - Callcenter REINICIADO." >> $log
         echo "==============================================" >> $log
-        /etc/init.d/callcenter_conf stop
-        /etc/init.d/callcenter_conf start
+        /etc/init.d/callcenter_conf restart
         echo "$dt - Callcenter_Conf REINICIADO." >> $log
         echo "==============================================" >> $log        
     else 
@@ -130,12 +132,10 @@ if [ $PROCESSS_DIS = 0 ]
     then
         echo "$dt - Numero de PIDs do Discador == $PROCESSS_CALL" >> $log
         echo "$dt - Discador DUPLICADO" >> $log
-        /etc/init.d/callcenter stop
-        /etc/init.d/callcenter start
+        /etc/init.d/callcenter restart
         echo "$dt - Callcenter REINICIADO." >> $log
         echo "==============================================" >> $log
-        /etc/init.d/callcenter_conf stop
-        /etc/init.d/callcenter_conf start
+        /etc/init.d/callcenter restart
         echo "$dt - Callcenter_Conf REINICIADO." >> $log
         echo "==============================================" >> $log        
     else 
