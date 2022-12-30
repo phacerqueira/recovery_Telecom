@@ -28,7 +28,7 @@ PID_DISCADOR=`ps -A -o pid,cmd | egrep "java -jar" | egrep "callcenter.jar disca
 PID_CONF_CC=`ps -A -o pid,cmd | egrep "java -jar" | egrep "callcenter.jar conf" | egrep -v egrep | awk '{print $1}'`
 
 echo "==============================================" >> $log
-echo "Recovery Telecom - V3.1" >> $log
+echo "Recovery Telecom - V3.1.1" >> $log
 echo "==============================================" >> $log
 
 # ANALISANDO PIDS DO ASTERISK E DO SERVIDOR WEB DE ACORDO COM O SISTEMA OPERACIONAL
@@ -42,7 +42,7 @@ if [ -z $SERVER_OS ]
         echo "==============================================" >> $log
     else
         echo "$dt - Sistema: Debian" >> $log
-        PID_ASTERISK=`ps -A -o pid,cmd | grep -w '/usr/sbin/asterisk' | grep -v grep | awk '{print $1}' | wc -l` 
+        PID_ASTERISK=`ps -A -o pid,cmd | grep -w '/usr/sbin/asterisk' | grep -v grep | grep -v sudo | awk '{print $1}' | wc -l` 
         echo "$dt - Análise de Servidor WEB ajustada para Apache2" >> $log
         PID_WEBSRV=`ps -A -o "%p : %a" | grep "/usr/sbin/apache2" | grep -v grep | awk '{print $1}' | wc -l`
         echo "==============================================" >> $log
@@ -52,7 +52,7 @@ fi
 
 ##CHECANDO ASTERISK PELA CONTAGEM DE PIDS
 
-if [ $PID_ASTERISK == 0 ]
+if [ $PID_ASTERISK -eq 0 ]
     then
         echo "$dt - Numero de PIDs do Asterisk == $PID_ASTERISK" >> $log
         echo "$dt - Asterisk PARADO..." >> $log
@@ -90,7 +90,7 @@ fi
 
 #CHECANDO CALLCENTER
 
-if [ $PID_CALLCENTER = 0 ]
+if [ $PID_CALLCENTER -eq 0 ]
     then
         echo "$dt - Numero de PIDs do CallCenter == $PID_CALLCENTER" >> $log
         echo "$dt - Callcenter PARADO" >> $log
@@ -117,7 +117,7 @@ fi
 
 #CHECANDO DISCADOR
 
-if [ $PID_DISCADOR = 0 ]
+if [ $PID_DISCADOR -eq 0 ]
     then
         echo "$dt - Numero de PIDs do Discador == $PID_CALLCENTER" >> $log
         echo "$dt - Discador PARADO" >> $log
@@ -160,7 +160,7 @@ fi
 
 ##CHECANDO APACHE/HTTPD
 
-if [ $PID_WEBSRV = 0 ];
+if [ $PID_WEBSRV -eq 0 ];
         then
             echo "$dt - APACHE PARADO" >> $log
             if [ -z $SERVER_OS ]
@@ -178,4 +178,3 @@ if [ $PID_WEBSRV = 0 ];
             echo "$dt - Quantidade de PIDS do Apache = $PID_WEBSRV" >> $log
             echo "==============================================" >> $log
 fi
-
